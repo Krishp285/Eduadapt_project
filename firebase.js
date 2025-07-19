@@ -1,5 +1,5 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyC_Xw8FWG04xpxQXyrYDkQK5u82_yCYp0w",
+  
   authDomain: "eduadapt-8e62e.firebaseapp.com",
   projectId: "eduadapt-8e62e",
   storageBucket: "eduadapt-8e62e.firebasestorage.app",
