@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduAdapt - Simple App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <h1 class="logo">EduAdapt</h1>
+    <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+  </header>
+  <main>
+    <!-- Login/Signup Section -->
+    <section id="auth" class="auth-section">
+      <h2>Login or Sign Up</h2>
+      <select id="role">
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+      </select>
+      <input type="text" id="email" placeholder="Email" class="input-field">
+      <input type="password" id="password" placeholder="Password" class="input-field">
+      <button id="login-btn" class="btn">Login</button>
+      <button id="signup-btn" class="btn">Sign Up</button>
+    </section>
+
+    <!-- Details Form Section -->
+    <section id="details-form" class="details-section" style="display:none;">
+      <h2>Add Your Details</h2>
+      <form id="details-form-element">
+        <input type="text" id="name" placeholder="Full Name" class="input-field" required>
+        <input type="number" id="age" placeholder="Age" class="input-field" required>
+        <input type="text" id="course" placeholder="Course" class="input-field" required>
+        <button type="submit" class="btn">Submit Details</button>
+      </form>
+      <p id="details-message"></p>
+    </section>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script src="login.js" defer></script>
+</body>
+</html>

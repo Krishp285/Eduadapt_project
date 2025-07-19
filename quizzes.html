@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quizzes & Assessments - EduAdapt</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo animate__animated animate__bounceIn">EduAdapt</h1>
+    <span id="status">Mode: Online</span>
+    <div class="theme-toggle">
+      <input type="checkbox" id="theme-switch" aria-label="Toggle Dark/Light Mode">
+      <label for="theme-switch" class="theme-slider"></label>
+    </div>
+    <button id="logout-btn" class="btn animate__animated animate__pulse">Logout</button>
+  </header>
+  <div class="app-container">
+    <aside class="sidebar" id="sidebar">
+      <button id="menu-toggle" aria-label="Toggle Menu">☰</button>
+      <h2 class="animate__animated animate__fadeIn">Menu</h2>
+      <ul>
+        <li><button id="dashboard-btn" class="animate__animated animate__pulse">🏠 Dashboard</button></li>
+        <li><button id="courses-btn" class="animate__animated animate__pulse">📚 My Courses</button></li>
+        <li><button id="ai-tutor-btn" class="animate__animated animate__pulse">🤖 AI Tutor Chat</button></li>
+        <li><button id="quizzes-btn" class="active animate__animated animate__pulse">📝 Quizzes & Assessments</button></li>
+        <li><button id="achievements-btn" class="animate__animated animate__pulse">🎮 Achievements & Gamification</button></li>
+        <li><button id="offline-mode-btn" class="animate__animated animate__pulse">📶 Offline Mode</button></li>
+        <li><button id="ar-vr-btn" class="animate__animated animate__pulse">🕶️ AR/VR Learning Hub</button></li>
+        <li><button id="portfolio-btn" class="animate__animated animate__pulse">🎨 AI Portfolio Designer</button></li>
+        <li><button id="community-btn" class="animate__animated animate__pulse">💬 Community & Discussions</button></li>
+        <li><button id="settings-btn" class="animate__animated animate__pulse">⚙️ Settings</button></li>
+        <li><button id="help-btn" class="animate__animated animate__pulse">❓ Help & Support</button></li>
+        <li><button id="logout-btn-sidebar" class="animate__animated animate__pulse">🚪 Log Out</button></li>
+      </ul>
+    </aside>
+    <main>
+      <section id="quizzes" class="quizzes-section animate__animated animate__fadeIn">
+        <h2 class="dashboard-title">Quizzes & Assessments 📝</h2>
+        <div class="quiz-area">
+          <h3>Available Quizzes</h3>
+          <div class="quiz-grid">
+            <div class="quiz-card">
+              <h4>Math Quiz: Algebra Basics</h4>
+              <p>10 questions | Difficulty: Easy</p>
+              <button class="btn start-quiz-btn" data-quiz-id="math-algebra">Start Quiz</button>
+            </div>
+            <div class="quiz-card">
+              <h4>Science Assessment: Physics Fundamentals</h4>
+              <p>15 questions | Difficulty: Medium</p>
+              <button class="btn start-quiz-btn" data-quiz-id="science-physics">Start Assessment</button>
+            </div>
+            <div class="quiz-card">
+              <h4>History Quiz: World Wars</h4>
+              <p>20 questions | Difficulty: Hard</p>
+              <button class="btn start-quiz-btn" data-quiz-id="history-ww">Start Quiz</button>
+            </div>
+          </div>
+        </div>
+        <div class="quiz-options">
+          <h3>Quiz Options</h3>
+          <select id="quiz-mode" aria-label="Quiz Mode">
+            <option value="timed">Timed Mode (10 mins)</option>
+            <option value="untimed">Untimed Mode</option>
+          </select>
+          <select id="difficulty-level" aria-label="Difficulty Level">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard (Adaptive)</option>
+          </select>
+        </div>
+        <div class="quiz-feedback" id="quiz-feedback" style="display:none;">
+          <h3>Quiz Feedback</h3>
+          <p id="feedback-text">Score: 8/10 - Great job! Focus on trigonometry for improvement.</p>
+        </div>
+        <div class="leaderboard">
+          <h3>Leaderboard & Rankings 🏆</h3>
+          <ul id="leaderboard-list">
+            <li>1. Raj - 95 points</li>
+            <li>2. Priya - 90 points</li>
+            <li>3. Alex - 85 points</li>
+          </ul>
+          <button id="view-full-leaderboard" class="btn">View Full Leaderboard</button>
+        </div>
+        <div class="certificate-section">
+          <h3>Certificates 🎓</h3>
+          <p id="certificate-status">Complete a quiz to generate a certificate!</p>
+          <button id="certificate-btn" class="btn" disabled>Generate Certificate</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script src="quizzes.js"></script>
+</body>
+</html>

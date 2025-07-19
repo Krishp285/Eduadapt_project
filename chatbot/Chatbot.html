@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App with Chatbot</title>
+</head>
+<body>
+    <h1>Welcome to Our Web App</h1>
+    
+    <!-- Container for the chatbot -->
+    <div id="chatbot-container"></div>
+    
+    <script>
+    // Chatbot code inline to avoid loading issues
+    class Chatbot {
+        constructor(options = {}) {
+            this.botName = options.botName || 'ChatBot';
+            this.greetingMessage = options.greeting || `Hi there! I'm ${this.botName}. How can I help you today?`;
+            this.responses = {
+                ...this.defaultResponses(),
+                ...(options.responses || {})
+            };
+            this.context = {};
+            this.conversation = [];
+            this.processingDelay = options.processingDelay || 500;
+        }
+
+        defaultResponses() {
+            return {
+                'greeting': ['Hello!', 'Hi there!', 'Hey! How can I help?'],
+                'farewell': ['Goodbye!', 'See you later!', 'Bye! Have a great day!'],
+                'thanks': ['You\'re welcome!', 'No problem!', 'Glad I could help!'],
+                'unknown': ['I\'m not sure how to respond to that.', 'Could you phrase that differently?', 'I don\'t understand. Can you try again?']
+            };
+        }
+
+        async processMessage(message) {
+            this.addToConversation('user', message);
+            await this.delay(this.processingDelay);
+            const response = this.generateResponse(message);
+            this.addToConversation('bot', response);
+            return response;
+        }
+
+        generateResponse(message) {
+            const input = message.toLowerCase().trim();
+            
+            if (this.containsAny(input, ['hello', 'hi', 'hey', 'greetings'])) {
+                return this.getRandomResponse('greeting');
+            }
+            
+            if (this.containsAny(input, ['bye', 'goodbye', 'see you', 'later'])) {
+                return this.getRandomResponse('farewell');
+            }
+            
+            if (this.containsAny(input, ['thank', 'thanks', 'appreciate'])) {
+                return this.getRandomResponse('thanks');
+            }
+            
+            if (input.includes('help')) {
+                return "I can help you with information, answering questions, or just chatting. What do you need assistance with?";
+            }
+            
+            if (input.includes('contact') || input.includes('support')) {
+                return "You can reach our support team at support@example.com or call us at (555) 123-4567.";
+            }
+            
+            return this.getRandomResponse('unknown');
+        }
+
+        containsAny(input, keywords) {
+            return keywords.some(keyword => input.includes(keyword));
+        }
+
+        getRandomResponse(category) {
+            const responses = this.responses[category];
+            if (!responses || responses.length === 0) {
+                return this.getRandomResponse('unknown');
+            }
+            const index = Math.floor(Math.random() * responses.length);
+            return responses[index];
+        }
+
+        addToConversation(sender, message) {
+            this.conversation.push({
+                sender,
+                message,
+                timestamp: new Date()
+            });
+        }
+
+        getConversation() {
+            return this.conversation;
+        }
+
+        delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        greet() {
+            return this.greetingMessage;
+        }
+    }
+
+    class ChatbotUI {
+        constructor(chatbot, elementId) {
+            this.chatbot = chatbot;
+            this.container = document.getElementById(elementId);
+            if (!this.container) {
+                console.error(`Element with ID "${elementId}" not found`);
+                return;
+            }
+            this.setupUI();
+        }
+
+        setupUI() {
+            this.container.innerHTML = `
+                <div class="chatbot-container">
+                    <div class="chatbot-header">
+                        <h3>${this.chatbot.botName}</h3>
+                    </div>
+                    <div class="chatbot-messages" id="chatbot-messages"></div>
+                    <div class="chatbot-input">
+                        <input type="text" id="chatbot-input-field" placeholder="Type your message...">
+                        <button id="chatbot-send-btn">Send</button>
+                    </div>
+                </div>
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .chatbot-container {
+                    width: 100%;
+                    max-width: 400px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    height: 500px;
+                }
+                .chatbot-header {
+                    background-color: #4a90e2;
+                    color: white;
+                    padding: 10px;
+                    text-align: center;
+                }
+                .chatbot-messages {
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .message {
+                    margin-bottom: 10px;
+                    padding: 8px 12px;
+                    border-radius: 16px;
+                    max-width: 80%;
+                    word-wrap: break-word;
+                }
+                .user-message {
+                    background-color: #e6f2ff;
+                    align-self: flex-end;
+                    border-bottom-right-radius: 4px;
+                }
+                .bot-message {
+                    background-color: #f0f0f0;
+                    align-self: flex-start;
+                    border-bottom-left-radius: 4px;
+                }
+                .chatbot-input {
+                    display: flex;
+                    padding: 10px;
+                    border-top: 1px solid #ccc;
+                }
+                .chatbot-input input {
+                    flex: 1;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    margin-right: 5px;
+                }
+                .chatbot-input button {
+                    background-color: #4a90e2;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                .chatbot-input button:hover {
+                    background-color: #3a7bc8;
+                }
+            `;
+            document.head.appendChild(style);
+
+            this.messagesContainer = document.getElementById('chatbot-messages');
+            this.inputField = document.getElementById('chatbot-input-field');
+            this.sendButton = document.getElementById('chatbot-send-btn');
+
+            this.sendButton.addEventListener('click', () => this.sendMessage());
+            this.inputField.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.sendMessage();
+                }
+            });
+
+            this.displayBotMessage(this.chatbot.greet());
+        }
+
+        async sendMessage() {
+            const message = this.inputField.value.trim();
+            if (message.length === 0) return;
+
+            this.displayUserMessage(message);
+            this.inputField.value = '';
+
+            const response = await this.chatbot.processMessage(message);
+            this.displayBotMessage(response);
+        }
+
+        displayUserMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message user-message';
+            messageElement.textContent = message;
+            this.messagesContainer.appendChild(messageElement);
+            this.scrollToBottom();
+        }
+
+        displayBotMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message bot-message';
+            messageElement.textContent = message;
+            this.messagesContainer.appendChild(messageElement);
+            this.scrollToBottom();
+        }
+
+        scrollToBottom() {
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }
+    }
+
+    function initChatbot() {
+        console.log("Initializing chatbot...");
+        const chatbot = new Chatbot({
+            botName: 'AssistBot',
+            greeting: 'Hello! I\'m AssistBot. How can I assist you today?',
+            responses: {
+                'features': ['We offer many features including product information, order tracking, and customer support.'],
+                'pricing': ['Our pricing starts at $9.99/month for the basic plan.']
+            },
+            processingDelay: 300
+        });
+
+        const ui = new ChatbotUI(chatbot, 'chatbot-container');
+    }
+
+    // Initialize immediately after page load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM fully loaded");
+        initChatbot();
+    });
+    
+    // Also try to initialize now in case DOM is already loaded
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        console.log("DOM already loaded, initializing now");
+        initChatbot();
+    }
+    </script>
+</body>
+</html>
