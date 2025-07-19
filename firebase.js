@@ -7,9 +7,9 @@ const firebaseConfig = {
   appId: "1:1002156798282:web:c51e9231ae08d268c8d1b3",
   measurementId: "G-74W748KTRP"
 };
+  //export const firebaseConfig; // Ensure this is exported if using modules
 
-
-const app = initializeApp(firebaseConfig);
-
-export const auth = getAuth(app);
-export const db = getFirestore(app); // Export Firestore instance
+  // Replace with your Firebase project credentials
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
