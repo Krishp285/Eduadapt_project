@@ -1,6 +1,9 @@
-  //export const firebaseConfig; // Ensure this is exported if using modules
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { firebaseConfig } from "./firebase-config";
 
-  // Replace with your Firebase project credentials
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
